@@ -1,6 +1,7 @@
 multiversx_sc::imports!();
 multiversx_sc::derive_imports!();
 
+use tfn_platform::common::errors::{ERROR_PLATFORM_ALREADY_SET, ERROR_PLATFORM_NOT_SET};
 use tfn_staking::common::errors::*;
 use crate::helpers;
 use super::storage::*;
@@ -14,6 +15,8 @@ super::storage::StorageModule
     #[only_owner]
     #[endpoint(setStateActive)]
     fn set_state_active(&self) {
+        require!(!self.platform_sc().is_empty(), ERROR_PLATFORM_NOT_SET);
+
         self.state().set(State::Active);
     }
 
@@ -31,6 +34,14 @@ super::storage::StorageModule
     #[view(getPlatformAddress)]
     #[storage_mapper("platform_address")]
     fn platform_sc(&self) -> SingleValueMapper<ManagedAddress>;
+
+    #[only_owner]
+    #[endpoint(setPlatformAddress)]
+    fn set_platform_address(&self, platform_sc: ManagedAddress) {
+        require!(self.platform_sc().is_empty(), ERROR_PLATFORM_ALREADY_SET);
+
+        self.platform_sc().set(&platform_sc);
+    }
 
     // stakes
     #[view(getStake)]

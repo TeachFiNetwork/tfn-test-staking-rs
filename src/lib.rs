@@ -17,9 +17,12 @@ common::config::ConfigModule
 +helpers::HelpersModule
 {
     #[init]
-    fn init(&self, platform_sc: ManagedAddress) {
-        self.platform_sc().set(platform_sc);
-        self.set_state_active();
+    fn init(&self) {
+        let caller = self.blockchain().get_caller();
+        if self.blockchain().is_smart_contract(&caller) {
+            self.platform_sc().set(caller);
+            self.set_state_active();
+        }
     }
 
     #[upgrade]

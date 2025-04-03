@@ -38,9 +38,10 @@ common::config::ConfigModule
         token_decimals: u8,
         reward_token: TokenIdentifier,
     ) {
+        require!(self.state().get() == State::Active, ERROR_CONTRACT_INACTIVE);
+
         let caller = self.blockchain().get_caller();
         self.check_whitelisted(&caller);
-        require!(self.state().get() == State::Active, ERROR_CONTRACT_INACTIVE);
         require!(self.get_stake_by_token(&token).is_none(), ERROR_STAKE_EXISTS);
 
         let issue_cost = self.call_value().egld_value().clone_value();

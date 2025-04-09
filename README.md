@@ -1,5 +1,5 @@
 <p align="center">
-  <a href="https://teachfi.network/" target="blank"><img src="https://teachfi.network/teachfi-logo.svg" width="256" alt="TeachFi Logo" /><br/>Test DEX</a>
+  <a href="https://teachfi.network/" target="blank"><img src="https://teachfi.network/teachfi-logo.svg" width="256" alt="TeachFi Logo" /><br/>Test Staking</a>
 </p>
 <br/>
 <br/>

@@ -8,6 +8,7 @@
 # Description
 
 This is a child contract of Platform SC. A separate instance is deployed for each platform subscriber.\
+Interest earning while helping students secure their blockchain projects. Users whitelisted in the parent Platform SC can create staking pools for any token and provide rewards in order to incentivize other students to lock the respective assets. Another great tool for helping students develop financial literacy.
 <br/>
 <br/>
 <br/>

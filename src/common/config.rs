@@ -94,7 +94,7 @@ super::storage::StorageModule
 
             let mut stake = self.stake(id).get();
             self.update_rps(&mut stake);
-            stakes.push(self.stake(id).get());
+            stakes.push(stake);
         }
 
         stakes

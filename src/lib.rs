@@ -214,6 +214,24 @@ common::config::ConfigModule
         self.stake(id).set(stake);
     }
 
+    #[endpoint(deleteStake)]
+    fn delete_stake(&self, id: u64) {
+        require!(self.state().get() == State::Active, ERROR_CONTRACT_INACTIVE);
+        require!(!self.stake(id).is_empty(), ERROR_STAKE_NOT_FOUND);
+
+        let stake = self.stake(id).get();
+        require!(stake.owner == self.blockchain().get_caller(), ERROR_NOT_STAKE_OWNER);
+        require!(stake.staked_amount == BigUint::zero(), ERROR_STAKE_NOT_EMPTY);
+
+        if stake.remaining_rewards > 0 {
+            self.send().direct_esdt(&stake.owner, &stake.reward_token, 0, &stake.remaining_rewards);
+        }
+        if id + 1 == self.last_stake_id().get() {
+            self.last_stake_id().set(id);
+        }
+        self.stake(id).clear();
+    }
+
     // helpers
     fn check_whitelisted(&self, address: &ManagedAddress) {
         self.platform_contract_proxy()

@@ -150,6 +150,17 @@
             "outputs": []
         },
         {
+            "name": "deleteStake",
+            "mutability": "mutable",
+            "inputs": [
+                {
+                    "name": "id",
+                    "type": "u64"
+                }
+            ],
+            "outputs": []
+        },
+        {
             "name": "setStateActive",
             "onlyOwner": true,
             "mutability": "mutable",

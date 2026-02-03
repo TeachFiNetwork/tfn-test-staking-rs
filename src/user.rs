@@ -76,6 +76,7 @@ storage::StorageModule
         self.send().direct_esdt(&caller, &stake.token, 0, &total_unstake_amount);
         if total_rewards > 0 {
             self.send().direct_esdt(&caller, &stake.reward_token, 0, &total_rewards);
+            stake.claimable_rewards -= &total_rewards;
         }
         stake.staked_amount -= total_unstake_amount;
         self.stake(stake.id).set(stake);
@@ -118,6 +119,7 @@ storage::StorageModule
         self.send().direct_esdt(&caller, &stake.liquid_token, nonce, &total_claimed_amount);
         if total_rewards > 0 {
             self.send().direct_esdt(&caller, &stake.reward_token, 0, &total_rewards);
+            stake.claimable_rewards -= &total_rewards;
         }
         self.stake(stake.id).set(stake);
     }

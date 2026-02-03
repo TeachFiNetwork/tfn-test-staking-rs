@@ -101,21 +101,14 @@ super::storage::StorageModule
     }
 
     #[view(getUserRewards)]
-    fn get_user_rewards(&self, id: u64, staked_tokens: ManagedVec<EsdtTokenPayment>) -> BigUint {
+    fn get_user_rewards(&self, id: u64, amount: BigUint, rps: BigUint) -> BigUint {
         require!(!self.stake(id).is_empty(), ERROR_STAKE_NOT_FOUND);
 
         let mut stake = self.stake(id).get();
         self.update_rps(&mut stake);
-    
-        let mut total_rewards = BigUint::zero();
+
         let one_token = BigUint::from(10u64).pow(stake.token_decimals as u32);
-        for payment in staked_tokens.iter() {
-            require!(payment.token_identifier == stake.liquid_token, ERROR_WRONG_PAYMENT_TOKEN);
 
-            let attributes: StakeTokenAttributes<Self::Api> = self.blockchain().get_token_attributes(&stake.liquid_token, payment.token_nonce);
-            total_rewards += &payment.amount * &(&stake.rps - &attributes.rps) / &one_token;
-        }
-
-        total_rewards
+        &amount * &(&stake.rps - &rps) / &one_token
     }
 }

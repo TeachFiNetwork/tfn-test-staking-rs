@@ -269,8 +269,12 @@
                     "type": "u64"
                 },
                 {
-                    "name": "staked_tokens",
-                    "type": "List<EsdtTokenPayment>"
+                    "name": "amount",
+                    "type": "BigUint"
+                },
+                {
+                    "name": "rps",
+                    "type": "BigUint"
                 }
             ],
             "outputs": [
@@ -310,23 +314,6 @@
     "esdtAttributes": [],
     "hasCallback": true,
     "types": {
-        "EsdtTokenPayment": {
-            "type": "struct",
-            "fields": [
-                {
-                    "name": "token_identifier",
-                    "type": "TokenIdentifier"
-                },
-                {
-                    "name": "token_nonce",
-                    "type": "u64"
-                },
-                {
-                    "name": "amount",
-                    "type": "BigUint"
-                }
-            ]
-        },
         "Stake": {
             "type": "struct",
             "fields": [

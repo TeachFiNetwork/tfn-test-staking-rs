@@ -87,6 +87,7 @@ common::config::ConfigModule
                     rewards_amount: BigUint::zero(),
                     claimable_rewards: BigUint::zero(),
                     remaining_rewards: BigUint::zero(),
+                    missing_rewards: BigUint::zero(),
                     rewards_per_second: BigUint::zero(),
                     start_time: 0,
                     end_time: 0,
@@ -174,9 +175,14 @@ common::config::ConfigModule
         let payment = self.call_value().single_esdt();
         require!(payment.token_identifier == stake.reward_token, ERROR_WRONG_PAYMENT_TOKEN);
 
-        self.update_rps(&mut stake);
+        if stake.stake_type == StakeType::DynamicAPR {
+            self.update_rps(&mut stake);
+        }
         stake.rewards_amount += &payment.amount;
         stake.remaining_rewards += payment.amount;
+        if stake.stake_type == StakeType::FixedAPR {
+            self.update_rps(&mut stake);
+        }
         self.stake(id).set(stake);
     }
 

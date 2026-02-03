@@ -30,6 +30,7 @@ pub struct Stake<M: ManagedTypeApi> {
     pub rewards_amount: BigUint<M>,
     pub claimable_rewards: BigUint<M>,
     pub remaining_rewards: BigUint<M>,
+    pub missing_rewards: BigUint<M>,
     pub rewards_per_second: BigUint<M>, // apr
     pub start_time: u64,
     pub end_time: u64,

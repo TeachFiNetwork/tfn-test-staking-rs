@@ -6,9 +6,9 @@ multiversx_sc::imports!();
 pub trait HelpersModule:
 storage::StorageModule
 {
-    fn update_rps(&self, stake: &mut Stake<Self::Api>) -> (bool, BigUint) {
+    fn update_rps(&self, stake: &mut Stake<Self::Api>) -> bool {
         if stake.remaining_time == 0 {
-            return (true, BigUint::zero());
+            return true;
         }
 
         let mut current_time = self.blockchain().get_block_timestamp();
@@ -17,7 +17,7 @@ storage::StorageModule
         }
         let elapsed_time = current_time - stake.last_rps_update_time;
         if elapsed_time == 0 {
-            return (true, BigUint::zero());
+            return true;
         }
 
         let staked = stake.staked_amount.clone();
@@ -35,7 +35,8 @@ storage::StorageModule
             let new_rps = &new_claimable_rewards * &one_token / staked;
             // require!(stake.remaining_rewards >= new_claimable_rewards, ERROR_OUT_OF_REWARDS);
             if stake.remaining_rewards < new_claimable_rewards {
-                return (false, &new_claimable_rewards - &stake.remaining_rewards);
+                stake.missing_rewards = &new_claimable_rewards - &stake.remaining_rewards;
+                return false;
             }
 
             stake.remaining_rewards -= &new_claimable_rewards;
@@ -44,7 +45,8 @@ storage::StorageModule
         }
         stake.last_rps_update_time = current_time;
         stake.remaining_time -= elapsed_time;
+        stake.missing_rewards = BigUint::zero();
 
-        (true, BigUint::zero())
+        true
     }
 }

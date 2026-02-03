@@ -29,8 +29,7 @@ storage::StorageModule
             stake.last_rps_update_time = current_time;
             stake.remaining_time = stake.end_time - current_time;
         }
-        let (ok, _) = self.update_rps(&mut stake);
-        require!(ok, ERROR_OUT_OF_REWARDS);
+        require!(self.update_rps(&mut stake), ERROR_OUT_OF_REWARDS);
         require!(stake.is_active(current_time), ERROR_STAKE_INACTIVE);
 
         let attributes = StakeTokenAttributes {
@@ -62,8 +61,7 @@ storage::StorageModule
         };
         require!(stake.state == State::Active, ERROR_STAKE_INACTIVE);
 
-        let (ok, _) = self.update_rps(&mut stake);
-        require!(ok, ERROR_OUT_OF_REWARDS);
+        require!(self.update_rps(&mut stake), ERROR_OUT_OF_REWARDS);
 
         let mut total_unstake_amount = BigUint::zero();
         let mut total_rewards = BigUint::zero();

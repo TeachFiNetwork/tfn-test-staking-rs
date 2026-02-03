@@ -377,6 +377,10 @@
                     "type": "BigUint"
                 },
                 {
+                    "name": "missing_rewards",
+                    "type": "BigUint"
+                },
+                {
                     "name": "rewards_per_second",
                     "type": "BigUint"
                 },

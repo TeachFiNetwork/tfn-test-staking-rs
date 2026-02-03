@@ -14,6 +14,7 @@ use tfn_staking::common::{errors::*, consts::*};
 pub trait TFNTestStakingContract<ContractReader>:
 common::config::ConfigModule
 +common::storage::StorageModule
++user::UserModule
 +helpers::HelpersModule
 {
     #[init]
